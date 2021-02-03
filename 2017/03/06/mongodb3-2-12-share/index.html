@@ -1,0 +1,905 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mongodb3.2.12 副本集 + 分片 完整安装 | DIUDIU 小菜鸟</title><meta name="keywords" content="mongo,shard"><meta name="author" content="景帅"><meta name="copyright" content="景帅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1.安装准备  MongoDB安装包：mongodb-Linux-x86_64-rhel70-3.2.8.tgz 下载地址：https:&#x2F;&#x2F;www.mongodb.com&#x2F;download-center#previous 下载MongoDB安装，选择Community Server选项，选中RHEL 6 Linux 64-bit版本下载。    2.解压MongoDB安装包  [hadoop@">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mongodb3.2.12 副本集 + 分片 完整安装">
+<meta property="og:url" content="http://www.jsledd.cn/2017/03/06/mongodb3-2-12-share/">
+<meta property="og:site_name" content="DIUDIU 小菜鸟">
+<meta property="og:description" content="1.安装准备  MongoDB安装包：mongodb-Linux-x86_64-rhel70-3.2.8.tgz 下载地址：https:&#x2F;&#x2F;www.mongodb.com&#x2F;download-center#previous 下载MongoDB安装，选择Community Server选项，选中RHEL 6 Linux 64-bit版本下载。    2.解压MongoDB安装包  [hadoop@">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.jsledd.cn/images/1.jpg">
+<meta property="article:published_time" content="2017-03-06T12:07:27.000Z">
+<meta property="article:modified_time" content="2021-01-08T09:44:32.686Z">
+<meta property="article:author" content="景帅">
+<meta property="article:tag" content="mongo">
+<meta property="article:tag" content="shard">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.jsledd.cn/images/1.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.jsledd.cn/2017/03/06/mongodb3-2-12-share/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?97afb665c94e0e38fa62f5e1ea0c5c68";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 景帅","link":"链接: ","source":"来源: DIUDIU 小菜鸟","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-01-08 17:44:32'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">55</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><i class="fa-fw fas fa-robot - 机器学习"></i><span> 人工智能</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><i class="fa-fw fas fa-tags - 数组"></i><span> 数据结构与算法</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE"><i class="fa-fw fas fa-folder-open - hadoop"></i><span> 大数据</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93"><i class="fa-fw fas fa-folder-open - mongo"></i><span> 数据库</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7"><i class="fa-fw fas fa-folder-open - java"></i><span> 开发语言与技巧</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li></ul></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/images/1.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DIUDIU 小菜鸟</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><i class="fa-fw fas fa-robot - 机器学习"></i><span> 人工智能</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><i class="fa-fw fas fa-tags - 数组"></i><span> 数据结构与算法</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE"><i class="fa-fw fas fa-folder-open - hadoop"></i><span> 大数据</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93"><i class="fa-fw fas fa-folder-open - mongo"></i><span> 数据库</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7"><i class="fa-fw fas fa-folder-open - java"></i><span> 开发语言与技巧</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Mongodb3.2.12 副本集 + 分片 完整安装</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-06T12:07:27.000Z" title="发表于 2017-03-06 20:07:27">2017-03-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:44:32.686Z" title="更新于 2021-01-08 17:44:32">2021-01-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mongodb/">mongodb</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<h2 id="1安装准备"><a class="markdownIt-Anchor" href="#1安装准备"></a> 1.安装准备</h2>
+</blockquote>
+<p>MongoDB安装包：mongodb-Linux-x86_64-rhel70-3.2.8.tgz</p>
+<p>下载地址：<a target="_blank" rel="noopener" href="https://www.mongodb.com/download-center#previous">https://www.mongodb.com/download-center#previous</a></p>
+<p>下载MongoDB安装，选择Community Server选项，选中RHEL 6 Linux 64-bit版本下载。</p>
+<p><img src="http://www.jsledd.cn/wp-content/uploads/2017/03/1.png" alt="1" /></p>
+<blockquote>
+<h2 id="2解压mongodb安装包"><a class="markdownIt-Anchor" href="#2解压mongodb安装包"></a> 2.解压MongoDB安装包</h2>
+</blockquote>
+<p>[hadoop@new-cdh9 Tools]$ tar -zxvf mongodb-linux-x86_64-amazon-3.2.12.tgz<br />
+mongodb-linux-x86_64-amazon-3.2.12/README<br />
+mongodb-linux-x86_64-amazon-3.2.12/THIRD-PARTY-NOTICES<br />
+mongodb-linux-x86_64-amazon-3.2.12/MPL-2<br />
+mongodb-linux-x86_64-amazon-3.2.12/GNU-AGPL-3.0<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongodump<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongorestore<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongoexport<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongoimport<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongostat<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongotop<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/bsondump<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongofiles<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongooplog<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongoperf<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongosniff<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongod<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongos<br />
+mongodb-linux-x86_64-amazon-3.2.12/bin/mongo<br />
+[hadoop@new-cdh12 Tools]$ mv mongodb-linux-x86_64-amazon-3.2.12 mongodb<br />
+[hadoop@new-cdh9 Tools]$</p>
+<blockquote>
+<h2 id="3创建mongodb存放数据库文件和日志的目录"><a class="markdownIt-Anchor" href="#3创建mongodb存放数据库文件和日志的目录"></a> 3.创建MongoDB存放数据库文件和日志的目录</h2>
+</blockquote>
+<p>[hadoop@new-cdh12 Tools]$ cd mongodb<br />
+[hadoop@new-cdh12 mongodb]$ ll<br />
+total 100<br />
+drwxrwxr-x 2 hadoop hadoop  4096 Mar  6 18:54 bin<br />
+-rw-rw-r-- 1 hadoop hadoop 34520 Feb  2 00:41 GNU-AGPL-3.0<br />
+-rw-rw-r-- 1 hadoop hadoop 16726 Feb  2 00:41 MPL-2<br />
+-rw-rw-r-- 1 hadoop hadoop  1359 Feb  2 00:41 README<br />
+-rw-rw-r-- 1 hadoop hadoop 35910 Feb  2 00:41 THIRD-PARTY-NOTICES<br />
+[hadoop@new-cdh12 mongodb]$ mkdir data log conf<br />
+[hadoop@new-cdh12 mongodb]$ ll<br />
+total 108<br />
+drwxrwxr-x 2 hadoop hadoop  4096 Mar  6 18:54 bin<br />
+drwxrwxr-x 2 hadoop hadoop  4096 Mar  6 19:03 conf<br />
+drwxrwxr-x 2 hadoop hadoop  4096 Mar  6 18:58 data<br />
+-rw-rw-r-- 1 hadoop hadoop 34520 Feb  2 00:41 GNU-AGPL-3.0<br />
+drwxrwxr-x 2 hadoop hadoop  4096 Mar  6 18:58 log<br />
+-rw-rw-r-- 1 hadoop hadoop 16726 Feb  2 00:41 MPL-2<br />
+-rw-rw-r-- 1 hadoop hadoop  1359 Feb  2 00:41 README<br />
+-rw-rw-r-- 1 hadoop hadoop 35910 Feb  2 00:41 THIRD-PARTY-NOTICES<br />
+[hadoop@new-cdh12 mongodb]$</p>
+<blockquote>
+<h2 id="4yaml格式mongodconfcore-options"><a class="markdownIt-Anchor" href="#4yaml格式mongodconfcore-options"></a> 4.YAML格式mongod.conf（Core Options）</h2>
+</blockquote>
+<p>配置请参考官方配置：<a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/reference/configuration-options/#core-options">https://docs.mongodb.com/manual/reference/configuration-options/#core-options</a> 我们采用YMAL格式配置mognod.conf文件。首先进入到mongodb的conf目录下，输入命令vim mongod.conf创建配置文件。输入配置信息后，进行保存. <strong>输入:号之后，需要空格隔开</strong></p>
+<p>systemLog:<br />
+destination:file  #以文件形式输出日志文件，输入file之前，需要空格<br />
+path: /hadoop/Tools/mongodb/log/shard1/mongodb.log #表示存储日志文件<br />
+logAppend: true    #日志是追加模式，false是覆盖模式<br />
+storage:<br />
+dbPath:/hadoop/Tools/mongodb/data/shard1    #表示存储mongodb数据库文件目录<br />
+processManagement:<br />
+fork: true    #作为后台服务运行<br />
+#net:<br />
+#         bindIP: 127.0.0.1<br />
+#         port: 27017<br />
+#security:<br />
+#         authorization:enabled</p>
+<blockquote>
+<h2 id="5搭建数据库副本集"><a class="markdownIt-Anchor" href="#5搭建数据库副本集"></a> 5.搭建数据库副本集</h2>
+</blockquote>
+<p>需要准备3台mongod服务器 new-cdh9:27017 new-cdh9:27017 new-cdh9:27017</p>
+<h3 id="1mongodconf文件配置"><a class="markdownIt-Anchor" href="#1mongodconf文件配置"></a> 1.Mongod.conf文件配置</h3>
+<p>在conf/shard1目录下vi mongod.conf文件输入以下内容：</p>
+<p>systemLog:<br />
+destination: file<br />
+path: /hadoop/Tools/mongodb/log/shard1/mongodb.log<br />
+logAppend: true<br />
+storage:<br />
+dbPath: /hadoop/Tools/mongodb/data/shard1<br />
+processManagement:<br />
+fork: true<br />
+replication:<br />
+oplogSizeMB: 5<br />
+replSetName: re01</p>
+<h3 id="2分别在3台机器上启动副本集"><a class="markdownIt-Anchor" href="#2分别在3台机器上启动副本集"></a> 2.分别在3台机器上启动副本集</h3>
+<p>[hadoop@new-cdh12 Tools]$ mongodb/bin/mongod -f mongodb/conf/shard1/mongod.conf<br />
+about to fork child process, waiting until server is ready for connections.<br />
+forked process: 19535<br />
+child process started successfully, parent exiting</p>
+<p>[hadoop@new-cdh10 Tools]$ mongodb/bin/mongod -f mongodb/conf/shard1/mongod.conf<br />
+about to fork child process, waiting until server is ready for connections.<br />
+forked process: 18495</p>
+<p>child process started successfully, parent exiting</p>
+<p>[hadoop@new-cdh9 Tools]$ mongodb/bin/mongod -f mongodb/conf/shard1/mongod.conf<br />
+about to fork child process, waiting until server is ready for connections.<br />
+forked process: 11523<br />
+child process started successfully, parent exiting</p>
+<p>启动之前记得创建所需要的文件夹。</p>
+<h3 id="3初始化副本集"><a class="markdownIt-Anchor" href="#3初始化副本集"></a> 3.初始化副本集</h3>
+<p>[hadoop@new-cdh9 Tools]$ mongodb/bin/mongo<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: test<br />
+Server has startup warnings:<br />
+2017-03-06T19:57:07.733+0800 I CONTROL  [initandlisten]<br />
+2017-03-06T19:57:07.733+0800 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. rlimits set to 31335 processes, 65535 files. Number of processes should be at least 32767.5 : 0.5 times number of files.<br />
+&gt; config={_id:“re01”,members:[{_id:0,host:“new-cdh9:27017”},{_id:1,host:“new-cdh10:27017”},{_id:2,host:“new-cdh12:27017”}]}<br />
+{<br />
+“_id” : “re01”,<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“host” : “new-cdh9:27017”<br />
+},<br />
+{<br />
+“_id” : 1,<br />
+“host” : “new-cdh10:27017”<br />
+},<br />
+{<br />
+“_id” : 2,<br />
+“host” : “new-cdh12:27017”<br />
+}<br />
+]<br />
+}<br />
+&gt; rs.initiate(config)<br />
+{ “ok” : 1 }<br />
+re01:OTHER&gt;<br />
+re01:PRIMARY&gt;<br />
+re01:PRIMARY&gt;</p>
+<h3 id="4检查副本集状态"><a class="markdownIt-Anchor" href="#4检查副本集状态"></a> 4.检查副本集状态</h3>
+<p>输入rs.status()查看副本集状态。 health：1   //1表明状态是正常，0表明异常 state:1    // 1表明是primary，2表明是slave，即做备份的机器</p>
+<p>re01:PRIMARY&gt; rs.status()<br />
+{<br />
+“set” : “re01”,<br />
+“date” : ISODate(“2017-03-06T12:08:20.110Z”),<br />
+“myState” : 1,<br />
+“term” : NumberLong(1),<br />
+“heartbeatIntervalMillis” : NumberLong(2000),<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“name” : “new-cdh9:27017”,<br />
+“health” : 1,<br />
+“state” : 1,<br />
+“stateStr” : “PRIMARY”,<br />
+“uptime” : 673,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488801896, 1),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T12:04:56Z”),<br />
+“electionTime” : Timestamp(1488801895, 1),<br />
+“electionDate” : ISODate(“2017-03-06T12:04:55Z”),<br />
+“configVersion” : 1,<br />
+“self” : true<br />
+},<br />
+{<br />
+“_id” : 1,<br />
+“name” : “new-cdh10:27017”,<br />
+“health” : 1,<br />
+“state” : 2,<br />
+“stateStr” : “SECONDARY”,<br />
+“uptime” : 215,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488801896, 1),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T12:04:56Z”),<br />
+“lastHeartbeat” : ISODate(“2017-03-06T12:08:20.001Z”),<br />
+“lastHeartbeatRecv” : ISODate(“2017-03-06T12:08:18.174Z”),<br />
+“pingMs” : NumberLong(0),<br />
+“syncingTo” : “new-cdh12:27017”,<br />
+“configVersion” : 1<br />
+},<br />
+{<br />
+“_id” : 2,<br />
+“name” : “new-cdh12:27017”,<br />
+“health” : 1,<br />
+“state” : 2,<br />
+“stateStr” : “SECONDARY”,<br />
+“uptime” : 215,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488801896, 1),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T12:04:56Z”),<br />
+“lastHeartbeat” : ISODate(“2017-03-06T12:08:20.001Z”),<br />
+“lastHeartbeatRecv” : ISODate(“2017-03-06T12:08:18.123Z”),<br />
+“pingMs” : NumberLong(0),<br />
+“syncingTo” : “new-cdh9:27017”,<br />
+“configVersion” : 1<br />
+}<br />
+],<br />
+“ok” : 1<br />
+}<br />
+re01:PRIMARY&gt;</p>
+<blockquote>
+<h2 id="6数据库分片"><a class="markdownIt-Anchor" href="#6数据库分片"></a> 6.数据库分片</h2>
+</blockquote>
+<p>Mongodb分配技术需要最少4台服务区，其中2台为mongod服务器，一台为mongos服务区，另外一太为mongosconfig server服务器。 但是资源不够 所有 通过改变端口的方式，在同一台机器上运行</p>
+<h3 id="1配置另一个副本集"><a class="markdownIt-Anchor" href="#1配置另一个副本集"></a> 1.配置另一个副本集</h3>
+<p>端口改成27018，更改副本集名称 详细配置如下，（创建所需文件件）</p>
+<p>systemLog:<br />
+destination: file<br />
+path: /hadoop/Tools/mongodb/log/shard2/mongodb.log<br />
+logAppend: true<br />
+storage:<br />
+dbPath: /hadoop/Tools/mongodb/data/shard2<br />
+net:<br />
+bindIp: 0.0.0.0<br />
+port: 27018<br />
+processManagement:<br />
+fork: true<br />
+replication:<br />
+oplogSizeMB: 5<br />
+replSetName: re02</p>
+<p>配置好启动，初始化副本集 参考 上面介绍</p>
+<p>[hadoop@new-cdh10 Tools]$ mongodb/bin/mongo --port 27018<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: 127.0.0.1:27018/test<br />
+Server has startup warnings:<br />
+2017-03-06T20:42:25.201+0800 I CONTROL  [initandlisten]<br />
+2017-03-06T20:42:25.201+0800 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. rlimits set to 31335 processes, 65535 files. Number of processes should be at least 32767.5 : 0.5 times number of files.<br />
+&gt; config={_id:“re02”,members:[{_id:0,host:“new-cdh9:27018”},{_id:1,host:“new-cdh10:27018”},{_id:2,host:“new-cdh12:27018”}]}<br />
+{<br />
+“_id” : “re02”,<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“host” : “new-cdh9:27018”<br />
+},<br />
+{<br />
+“_id” : 1,<br />
+“host” : “new-cdh10:27018”<br />
+},<br />
+{<br />
+“_id” : 2,<br />
+“host” : “new-cdh12:27018”<br />
+}<br />
+]<br />
+}<br />
+&gt; rs.initiate(config)<br />
+{ “ok” : 1 }<br />
+re02:OTHER&gt;<br />
+re02:SECONDARY&gt;<br />
+re02:PRIMARY&gt; rs.status()<br />
+{<br />
+“set” : “re02”,<br />
+“date” : ISODate(“2017-03-06T12:50:54.839Z”),<br />
+“myState” : 1,<br />
+“term” : NumberLong(1),<br />
+“heartbeatIntervalMillis” : NumberLong(2000),<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“name” : “new-cdh9:27018”,<br />
+“health” : 1,<br />
+“state” : 2,<br />
+“stateStr” : “SECONDARY”,<br />
+“uptime” : 107,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488804559, 2),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T12:49:19Z”),<br />
+“lastHeartbeat” : ISODate(“2017-03-06T12:50:53.350Z”),<br />
+“lastHeartbeatRecv” : ISODate(“2017-03-06T12:50:53.019Z”),<br />
+“pingMs” : NumberLong(0),<br />
+“syncingTo” : “new-cdh10:27018”,<br />
+“configVersion” : 1<br />
+},<br />
+{<br />
+“_id” : 1,<br />
+“name” : “new-cdh10:27018”,<br />
+“health” : 1,<br />
+“state” : 1,<br />
+“stateStr” : “PRIMARY”,<br />
+“uptime” : 510,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488804559, 2),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T12:49:19Z”),<br />
+“infoMessage” : “could not find member to sync from”,<br />
+“electionTime” : Timestamp(1488804559, 1),<br />
+“electionDate” : ISODate(“2017-03-06T12:49:19Z”),<br />
+“configVersion” : 1,<br />
+“self” : true<br />
+},<br />
+{<br />
+“_id” : 2,<br />
+“name” : “new-cdh12:27018”,<br />
+“health” : 1,<br />
+“state” : 2,<br />
+“stateStr” : “SECONDARY”,<br />
+“uptime” : 107,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488804559, 2),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T12:49:19Z”),<br />
+“lastHeartbeat” : ISODate(“2017-03-06T12:50:53.350Z”),<br />
+“lastHeartbeatRecv” : ISODate(“2017-03-06T12:50:53.072Z”),<br />
+“pingMs” : NumberLong(0),<br />
+“syncingTo” : “new-cdh10:27018”,<br />
+“configVersion” : 1<br />
+}<br />
+],<br />
+“ok” : 1<br />
+}<br />
+re02:PRIMARY&gt;</p>
+<p></p>
+<h3 id="2设置最高优先级强制转换成员为主节点"><a class="markdownIt-Anchor" href="#2设置最高优先级强制转换成员为主节点"></a> 2.设置最高优先级强制转换成员为主节点</h3>
+<p>输入cfg=rs.conf()命令 输入命令： #cfg.members[0].priority=1 #cfg.members[2].priority=0.5</p>
+<p>re02:PRIMARY&gt; cfg=rs.conf()<br />
+{<br />
+“_id” : “re02”,<br />
+“version” : 1,<br />
+“protocolVersion” : NumberLong(1),<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“host” : “new-cdh9:27018”,<br />
+“arbiterOnly” : false,<br />
+“buildIndexes” : true,<br />
+“hidden” : false,<br />
+“priority” : 1,<br />
+“tags” : {</p>
+<pre><code>                    &#125;,
+                    &quot;slaveDelay&quot; : NumberLong(0),
+                    &quot;votes&quot; : 1
+            &#125;,
+            &#123;
+                    &quot;_id&quot; : 1,
+                    &quot;host&quot; : &quot;new-cdh10:27018&quot;,
+                    &quot;arbiterOnly&quot; : false,
+                    &quot;buildIndexes&quot; : true,
+                    &quot;hidden&quot; : false,
+                    &quot;priority&quot; : 1,
+                    &quot;tags&quot; : &#123;
+
+                    &#125;,
+                    &quot;slaveDelay&quot; : NumberLong(0),
+                    &quot;votes&quot; : 1
+            &#125;,
+            &#123;
+                    &quot;_id&quot; : 2,
+                    &quot;host&quot; : &quot;new-cdh12:27018&quot;,
+                    &quot;arbiterOnly&quot; : false,
+                    &quot;buildIndexes&quot; : true,
+                    &quot;hidden&quot; : false,
+                    &quot;priority&quot; : 1,
+                    &quot;tags&quot; : &#123;
+
+                    &#125;,
+                    &quot;slaveDelay&quot; : NumberLong(0),
+                    &quot;votes&quot; : 1
+            &#125;
+    \],
+    &quot;settings&quot; : &#123;
+            &quot;chainingAllowed&quot; : true,
+            &quot;heartbeatIntervalMillis&quot; : 2000,
+            &quot;heartbeatTimeoutSecs&quot; : 10,
+            &quot;electionTimeoutMillis&quot; : 10000,
+            &quot;getLastErrorModes&quot; : &#123;
+
+            &#125;,
+            &quot;getLastErrorDefaults&quot; : &#123;
+                    &quot;w&quot; : 1,
+                    &quot;wtimeout&quot; : 0
+            &#125;,
+            &quot;replicaSetId&quot; : ObjectId(&quot;58bd5ac24d2b001bf76cbc6a&quot;)
+    &#125;
+</code></pre>
+<p>}<br />
+re02:PRIMARY&gt; cfg.members[2].priority=0.5<br />
+0.5<br />
+re02:PRIMARY&gt; cfg.members[0].priority=0.5<br />
+0.5<br />
+re02:PRIMARY&gt; cfg.members[1].priority=1<br />
+1<br />
+re02:PRIMARY&gt; rs.reconfig(cfg)<br />
+{ “ok” : 1 }<br />
+re02:PRIMARY&gt; cfg=rs.conf()<br />
+{<br />
+“_id” : “re02”,<br />
+“version” : 2,<br />
+“protocolVersion” : NumberLong(1),<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“host” : “new-cdh9:27018”,<br />
+“arbiterOnly” : false,<br />
+“buildIndexes” : true,<br />
+“hidden” : false,<br />
+“priority” : 0.5,<br />
+“tags” : {</p>
+<pre><code>                    &#125;,
+                    &quot;slaveDelay&quot; : NumberLong(0),
+                    &quot;votes&quot; : 1
+            &#125;,
+            &#123;
+                    &quot;_id&quot; : 1,
+                    &quot;host&quot; : &quot;new-cdh10:27018&quot;,
+                    &quot;arbiterOnly&quot; : false,
+                    &quot;buildIndexes&quot; : true,
+                    &quot;hidden&quot; : false,
+                    &quot;priority&quot; : 1,
+                    &quot;tags&quot; : &#123;
+
+                    &#125;,
+                    &quot;slaveDelay&quot; : NumberLong(0),
+                    &quot;votes&quot; : 1
+            &#125;,
+            &#123;
+                    &quot;_id&quot; : 2,
+                    &quot;host&quot; : &quot;new-cdh12:27018&quot;,
+                    &quot;arbiterOnly&quot; : false,
+                    &quot;buildIndexes&quot; : true,
+                    &quot;hidden&quot; : false,
+                    &quot;priority&quot; : 0.5,
+                    &quot;tags&quot; : &#123;
+
+                    &#125;,
+                    &quot;slaveDelay&quot; : NumberLong(0),
+                    &quot;votes&quot; : 1
+            &#125;
+    \],
+    &quot;settings&quot; : &#123;
+            &quot;chainingAllowed&quot; : true,
+            &quot;heartbeatIntervalMillis&quot; : 2000,
+            &quot;heartbeatTimeoutSecs&quot; : 10,
+            &quot;electionTimeoutMillis&quot; : 10000,
+            &quot;getLastErrorModes&quot; : &#123;
+
+            &#125;,
+            &quot;getLastErrorDefaults&quot; : &#123;
+                    &quot;w&quot; : 1,
+                    &quot;wtimeout&quot; : 0
+            &#125;,
+            &quot;replicaSetId&quot; : ObjectId(&quot;58bd5ac24d2b001bf76cbc6a&quot;)
+    &#125;
+</code></pre>
+<p>}<br />
+re02:PRIMARY&gt;</p>
+<p>使分片副本集1 的主节点落在new-cdh9上（操作参考上面） 使分片副本集2 的主节点落在new-cdh10上(操作如上)</p>
+<h3 id="3配置config副本集服务器"><a class="markdownIt-Anchor" href="#3配置config副本集服务器"></a> 3.配置config副本集服务器</h3>
+<p>创建所需文件夹 需要添加上replication节点，需要加上副本集名称。 详细配置如下</p>
+<p>[hadoop@new-cdh9 Tools]$ vi mongodb/conf/config/mongod.conf<br />
+systemLog:<br />
+destination: file<br />
+path: /hadoop/Tools/mongodb/log/config/mongodb.log<br />
+logAppend: true<br />
+storage:<br />
+dbPath: /hadoop/Tools/mongodb/data/config<br />
+processManagement:<br />
+fork: true<br />
+sharding:<br />
+clusterRole: configsvr<br />
+replication:<br />
+oplogSizeMB: 5<br />
+replSetName: config01<br />
+~<br />
+“mongodb/conf/config/mongod.conf” 13L, 326C written<br />
+[hadoop@new-cdh9 Tools]$ mongodb/bin/mongod -f mongodb/conf/config/mongod.conf<br />
+about to fork child process, waiting until server is ready for connections.<br />
+forked process: 11909<br />
+child process started successfully, parent exiting<br />
+[hadoop@new-cdh9 Tools]$</p>
+<p>分别在两台机器上启动mongo</p>
+<h3 id="4初始化配置config副本集服务器"><a class="markdownIt-Anchor" href="#4初始化配置config副本集服务器"></a> 4.初始化配置config副本集服务器</h3>
+<p>只能初始化一次</p>
+<p>[hadoop@new-cdh9 Tools]$ mongodb/bin/mongo --port 27019<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: 127.0.0.1:27019/test<br />
+Server has startup warnings:<br />
+2017-03-06T21:16:45.868+0800 I CONTROL  [initandlisten]<br />
+2017-03-06T21:16:45.868+0800 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. rlimits set to 31335 processes, 65535 files. Number of processes should be at least 32767.5 : 0.5 times number of files.<br />
+&gt; config={_id:“config01”,members:[{_id:0,host:“new-cdh9:27019”},{_id:1,host:“new-cdh10:27019”}]}<br />
+{<br />
+“_id” : “config01”,<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“host” : “new-cdh9:27019”<br />
+},<br />
+{<br />
+“_id” : 1,<br />
+“host” : “new-cdh10:27019”<br />
+}<br />
+]<br />
+}<br />
+&gt; rs.initiate(config)<br />
+{ “ok” : 1 }<br />
+config01:OTHER&gt; rs.status()<br />
+{<br />
+“set” : “config01”,<br />
+“date” : ISODate(“2017-03-06T13:23:38.057Z”),<br />
+“myState” : 1,<br />
+“term” : NumberLong(1),<br />
+“configsvr” : true,<br />
+“heartbeatIntervalMillis” : NumberLong(2000),<br />
+“members” : [<br />
+{<br />
+“_id” : 0,<br />
+“name” : “new-cdh9:27019”,<br />
+“health” : 1,<br />
+“state” : 1,<br />
+“stateStr” : “PRIMARY”,<br />
+“uptime” : 413,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488806612, 1),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T13:23:32Z”),<br />
+“infoMessage” : “could not find member to sync from”,<br />
+“electionTime” : Timestamp(1488806611, 1),<br />
+“electionDate” : ISODate(“2017-03-06T13:23:31Z”),<br />
+“configVersion” : 1,<br />
+“self” : true<br />
+},<br />
+{<br />
+“_id” : 1,<br />
+“name” : “new-cdh10:27019”,<br />
+“health” : 1,<br />
+“state” : 2,<br />
+“stateStr” : “SECONDARY”,<br />
+“uptime” : 17,<br />
+“optime” : {<br />
+“ts” : Timestamp(1488806612, 1),<br />
+“t” : NumberLong(1)<br />
+},<br />
+“optimeDate” : ISODate(“2017-03-06T13:23:32Z”),<br />
+“lastHeartbeat” : ISODate(“2017-03-06T13:23:37.996Z”),<br />
+“lastHeartbeatRecv” : ISODate(“2017-03-06T13:23:34.193Z”),<br />
+“pingMs” : NumberLong(0),<br />
+“syncingTo” : “new-cdh9:27019”,<br />
+“configVersion” : 1<br />
+}<br />
+],<br />
+“ok” : 1<br />
+}<br />
+config01:PRIMARY&gt;</p>
+<h3 id="5配置启动mongos服务器"><a class="markdownIt-Anchor" href="#5配置启动mongos服务器"></a> 5.配置启动mongos服务器</h3>
+<p>由于config服务器是副本集结构，所以在配置mognos.conf文件也有所变化。 跟以前不同，这里需要在服务器地址前添加副本集名称，每个服务器之间都要用逗号隔开就可以。这是启动第一个mongos服务器。 以下是mongos.conf文件配置内容：</p>
+<p>systemLog:<br />
+destination: file<br />
+path: /hadoop/Tools/mongodb/log/mongos/mongos.log<br />
+logAppend: true<br />
+processManagement:<br />
+fork: true<br />
+net:<br />
+port: 28885<br />
+sharding:<br />
+configDB: config01/new-cdh9:27019, new-cdh9:27019</p>
+<p>在mongos 集群上分别启动，配置文件相同</p>
+<h3 id="6添加分片副本集"><a class="markdownIt-Anchor" href="#6添加分片副本集"></a> 6.添加分片副本集</h3>
+<p>[hadoop@new-cdh9 Tools]$ mongodb/bin/mongo new-cdh9:28885<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: new-cdh9:28885/test<br />
+mongos&gt; use admin<br />
+switched to db admin<br />
+mongos&gt; db.runCommand({addshard:“re01/new-cdh9:27017”})<br />
+{ “shardAdded” : “re01”, “ok” : 1 }<br />
+mongos&gt; db.runCommand({addshard:“re02/new-cdh10:27018”})<br />
+{ “shardAdded” : “re02”, “ok” : 1 }<br />
+mongos&gt;</p>
+<h3 id="7在mongos中添加分片数据库并设置片键"><a class="markdownIt-Anchor" href="#7在mongos中添加分片数据库并设置片键"></a> 7.在mongos中添加分片数据库并设置片键</h3>
+<p>[hadoop@new-cdh9 ~]$ Tools/mongodb/bin/mongo new-cdh9:28885<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: new-cdh9:28885/test<br />
+mongos&gt; use admin<br />
+switched to db admin<br />
+mongos&gt; db.runCommand({enablesharding:“mydbtest”})<br />
+{ “ok” : 1 }<br />
+mongos&gt; db.runCommand({shardcollection:“mydbtest.user”,key:{“userName”:“hashed”}})<br />
+{ “collectionsharded” : “mydbtest.user”, “ok” : 1 }</p>
+<h3 id="8在mongos中测试分片和副本集"><a class="markdownIt-Anchor" href="#8在mongos中测试分片和副本集"></a> 8.在mongos中<strong>测试分片和副本集</strong></h3>
+<p>mongos&gt; use mydbtest<br />
+switched to db mydbtest<br />
+mongos&gt; for(var i=0;i&lt;10000;i++){db.user.insert({“userName”:“user”+i,“depart”:“towngas”,“userNo”:“no.”+i})}<br />
+WriteResult({ “nInserted” : 1 })<br />
+mongos&gt; db.printShardingStatus()<br />
+— Sharding Status —<br />
+sharding version: {<br />
+“_id” : 1,<br />
+“minCompatibleVersion” : 5,<br />
+“currentVersion” : 6,<br />
+“clusterId” : ObjectId(“58bd66d71f6b1608450ac068”)<br />
+}<br />
+shards:<br />
+{  “_id” : “re01”,  “host” : “re01/new-cdh10:27017,new-cdh12:27017,new-cdh9:27017” }<br />
+{  “_id” : “re02”,  “host” : “re02/new-cdh10:27018,new-cdh12:27018,new-cdh9:27018” }<br />
+active mongoses:<br />
+“3.2.12” : 2<br />
+balancer:<br />
+Currently enabled:  yes<br />
+Currently running:  no<br />
+Failed balancer rounds in last 5 attempts:  0<br />
+Migration Results for the last 24 hours:<br />
+4 : Success<br />
+2 : Failed with error ‘aborted’, from re02 to re01<br />
+159 : Failed with error ‘ns not found, should be impossible’, from re02 to re01<br />
+1 : Failed with error ‘data transfer error’, from re02 to re01<br />
+databases:<br />
+{  “_id” : “family”,  “primary” : “re01”,  “partitioned” : false }<br />
+{  “_id” : “mydb”,  “primary” : “re02”,  “partitioned” : true }<br />
+mydb.user<br />
+shard key: { “userName” : 1 }<br />
+unique: false<br />
+balancing: true<br />
+chunks:<br />
+re01    3<br />
+re02    5<br />
+{ “userName” : { “minKey" : 1 } } -->> { "userName" : "user1" } on : re01 Timestamp(2, 0) 
+                        { "userName" : "user1" } -->> { "userName" : "user185791" } on : re01 Timestamp(3, 0) 
+                        { "userName" : "user185791" } -->> { "userName" : "user36485" } on : re01 Timestamp(4, 0) 
+                        { "userName" : "user36485" } -->> { "userName" : "user450641" } on : re02 Timestamp(4, 1) 
+                        { "userName" : "user450641" } -->> { "userName" : "user536435" } on : re02 Timestamp(3, 3) 
+                        { "userName" : "user536435" } -->> { "userName" : "user622228" } on : re02 Timestamp(3, 4) 
+                        { "userName" : "user622228" } -->> { "userName" : "user7" } on : re02 Timestamp(3, 5) 
+                        { "userName" : "user7" } -->> { "userName" : { "maxKey” : 1 } } on : re02 Timestamp(1, 3)<br />
+{  “_id” : “mydbtest”,  “primary” : “re02”,  “partitioned” : true }<br />
+mydbtest.user<br />
+shard key: { “userName” : “hashed” }<br />
+unique: false<br />
+balancing: true<br />
+chunks:<br />
+re01    2<br />
+re02    2<br />
+{ “userName” : { “minKey" : 1 } } -->> { "userName" : NumberLong("-4611686018427387902") } on : re01 Timestamp(2, 2) 
+                        { "userName" : NumberLong("-4611686018427387902") } -->> { "userName" : NumberLong(0) } on : re01 Timestamp(2, 3) 
+                        { "userName" : NumberLong(0) } -->> { "userName" : NumberLong("4611686018427387902") } on : re02 Timestamp(2, 4) 
+                        { "userName" : NumberLong("4611686018427387902") } -->> { "userName" : { "maxKey” : 1 } } on : re02 Timestamp(2, 5)</p>
+<p>mongos&gt; ^C<br />
+bye</p>
+<p>看结果我们已经把数据分在 re1 和re2 上 分别登录各分片的主节点 查看</p>
+<p>[hadoop@new-cdh9 ~]$ Tools/mongodb/bin/mongo new-cdh9:27017<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: new-cdh9:27017/test<br />
+Server has startup warnings:<br />
+2017-03-06T19:57:07.733+0800 I CONTROL  [initandlisten]<br />
+2017-03-06T19:57:07.733+0800 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. rlimits set to 31335 processes, 65535 files. Number of processes should be at least 32767.5 : 0.5 times number of files.<br />
+re01:PRIMARY&gt; use mydbtest<br />
+switched to db mydbtest<br />
+re01:PRIMARY&gt; db.user.count()<br />
+4969<br />
+re01:PRIMARY&gt; ^C<br />
+bye<br />
+[hadoop@new-cdh9 ~]$ Tools/mongodb/bin/mongo new-cdh10:27018<br />
+MongoDB shell version: 3.2.12<br />
+connecting to: new-cdh10:27018/test<br />
+Server has startup warnings:<br />
+2017-03-06T20:42:25.201+0800 I CONTROL  [initandlisten]<br />
+2017-03-06T20:42:25.201+0800 I CONTROL  [initandlisten] ** WARNING: soft rlimits too low. rlimits set to 31335 processes, 65535 files. Number of processes should be at least 32767.5 : 0.5 times number of files.<br />
+re02:PRIMARY&gt; use mydbtest<br />
+switched to db mydbtest<br />
+re02:PRIMARY&gt; db.user.count()<br />
+5031<br />
+re02:PRIMARY&gt;</p>
+<p>行数分别是 5031 + 4969 = 10000 证明我们分片测试成功</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">景帅</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.jsledd.cn/2017/03/06/mongodb3-2-12-share/">http://www.jsledd.cn/2017/03/06/mongodb3-2-12-share/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.jsledd.cn" target="_blank">DIUDIU 小菜鸟</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/mongo/">mongo</a><a class="post-meta__tags" href="/tags/shard/">shard</a></div><div class="post_share"><div class="social-share" data-image="/images/1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/03/07/python-numpy-math/"><img class="prev-cover" src="/images/15.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Python科学计算库Numpy之 算数操作</div></div></a></div><div class="next-post pull-right"><a href="/2017/03/06/python-numpy-string/"><img class="next-cover" src="/images/15.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python科学计算库Numpy之 字符串操作</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2019/09/29/mongodb42-shard/" title="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本"><img class="cover" src="/images/11.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-09-29</div><div class="title">Mongodb4.2.0 副本集 + 分片 + 自动运维脚本</div></div></a></div><div><a href="/2016/05/03/mongodb-install-1/" title="mongodb 安装使用-安装和卸载-1"><img class="cover" src="/images/4.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2016-05-03</div><div class="title">mongodb 安装使用-安装和卸载-1</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">景帅</div><div class="author-info__description">DIUDIU 小菜鸟 学习笔记</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">55</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/shadowagnoy"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/shadowagnoy/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jingshuai@jsledd.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">记录成长</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E5%AE%89%E8%A3%85%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text"> 1.安装准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E8%A7%A3%E5%8E%8Bmongodb%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">2.</span> <span class="toc-text"> 2.解压MongoDB安装包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E5%88%9B%E5%BB%BAmongodb%E5%AD%98%E6%94%BE%E6%95%B0%E6%8D%AE%E5%BA%93%E6%96%87%E4%BB%B6%E5%92%8C%E6%97%A5%E5%BF%97%E7%9A%84%E7%9B%AE%E5%BD%95"><span class="toc-number">3.</span> <span class="toc-text"> 3.创建MongoDB存放数据库文件和日志的目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4yaml%E6%A0%BC%E5%BC%8Fmongodconfcore-options"><span class="toc-number">4.</span> <span class="toc-text"> 4.YAML格式mongod.conf（Core Options）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E6%90%AD%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%BA%93%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">5.</span> <span class="toc-text"> 5.搭建数据库副本集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1mongodconf%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE"><span class="toc-number">5.1.</span> <span class="toc-text"> 1.Mongod.conf文件配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E5%88%86%E5%88%AB%E5%9C%A83%E5%8F%B0%E6%9C%BA%E5%99%A8%E4%B8%8A%E5%90%AF%E5%8A%A8%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">5.2.</span> <span class="toc-text"> 2.分别在3台机器上启动副本集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E5%88%9D%E5%A7%8B%E5%8C%96%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">5.3.</span> <span class="toc-text"> 3.初始化副本集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E6%A3%80%E6%9F%A5%E5%89%AF%E6%9C%AC%E9%9B%86%E7%8A%B6%E6%80%81"><span class="toc-number">5.4.</span> <span class="toc-text"> 4.检查副本集状态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%86%E7%89%87"><span class="toc-number">6.</span> <span class="toc-text"> 6.数据库分片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E9%85%8D%E7%BD%AE%E5%8F%A6%E4%B8%80%E4%B8%AA%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">6.1.</span> <span class="toc-text"> 1.配置另一个副本集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E8%AE%BE%E7%BD%AE%E6%9C%80%E9%AB%98%E4%BC%98%E5%85%88%E7%BA%A7%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2%E6%88%90%E5%91%98%E4%B8%BA%E4%B8%BB%E8%8A%82%E7%82%B9"><span class="toc-number">6.2.</span> <span class="toc-text"> 2.设置最高优先级强制转换成员为主节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E9%85%8D%E7%BD%AEconfig%E5%89%AF%E6%9C%AC%E9%9B%86%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">6.3.</span> <span class="toc-text"> 3.配置config副本集服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AEconfig%E5%89%AF%E6%9C%AC%E9%9B%86%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">6.4.</span> <span class="toc-text"> 4.初始化配置config副本集服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E9%85%8D%E7%BD%AE%E5%90%AF%E5%8A%A8mongos%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">6.5.</span> <span class="toc-text"> 5.配置启动mongos服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E6%B7%BB%E5%8A%A0%E5%88%86%E7%89%87%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">6.6.</span> <span class="toc-text"> 6.添加分片副本集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E5%9C%A8mongos%E4%B8%AD%E6%B7%BB%E5%8A%A0%E5%88%86%E7%89%87%E6%95%B0%E6%8D%AE%E5%BA%93%E5%B9%B6%E8%AE%BE%E7%BD%AE%E7%89%87%E9%94%AE"><span class="toc-number">6.7.</span> <span class="toc-text"> 7.在mongos中添加分片数据库并设置片键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E5%9C%A8mongos%E4%B8%AD%E6%B5%8B%E8%AF%95%E5%88%86%E7%89%87%E5%92%8C%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">6.8.</span> <span class="toc-text"> 8.在mongos中测试分片和副本集</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/largegroup/" title="较大分组的位置"><img src="/2021/01/05/largegroup/largegroup.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="较大分组的位置"/></a><div class="content"><a class="title" href="/2021/01/05/largegroup/" title="较大分组的位置">较大分组的位置</a><time datetime="2021-01-05T02:55:40.000Z" title="发表于 2021-01-05 10:55:40">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/09/29/mongodb42-shard/" title="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本"><img src="/images/11.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本"/></a><div class="content"><a class="title" href="/2019/09/29/mongodb42-shard/" title="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本">Mongodb4.2.0 副本集 + 分片 + 自动运维脚本</a><time datetime="2019-09-29T07:46:25.000Z" title="发表于 2019-09-29 15:46:25">2019-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/04/05/datasourcev2/" title="Spark SQL DataSource V2 学习入门 + 代码模板"><img src="/images/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spark SQL DataSource V2 学习入门 + 代码模板"/></a><div class="content"><a class="title" href="/2019/04/05/datasourcev2/" title="Spark SQL DataSource V2 学习入门 + 代码模板">Spark SQL DataSource V2 学习入门 + 代码模板</a><time datetime="2019-04-05T08:09:19.000Z" title="发表于 2019-04-05 16:09:19">2019-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/04/01/sparksql24api/" title="SPARK SQL2.4 自学教程"><img src="/images/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SPARK SQL2.4 自学教程"/></a><div class="content"><a class="title" href="/2019/04/01/sparksql24api/" title="SPARK SQL2.4 自学教程">SPARK SQL2.4 自学教程</a><time datetime="2019-04-01T07:46:25.000Z" title="发表于 2019-04-01 15:46:25">2019-04-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2018/08/05/linearregression/" title="线性回归模型的推导"><img src="/images/10.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线性回归模型的推导"/></a><div class="content"><a class="title" href="/2018/08/05/linearregression/" title="线性回归模型的推导">线性回归模型的推导</a><time datetime="2018-08-05T02:40:11.000Z" title="发表于 2018-08-05 10:40:11">2018-08-05</time></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/images/1.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2021 By 景帅</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a rel="nofollow" target="_blank" href="http://www.miibeian.gov.cn/"><img class="icp-icon" src="/img/icp.png">京ICP备16021974号-1</a><br><span id="span_dt_dt"></span><script type="text/javascript">function s(){window.setTimeout("s()",1000);BirthDay=new Date("4/18/2016 12:48:26");today=new Date();timeold=(today.getTime()-BirthDay.getTime());sectimeold=timeold/1000;secondsold=Math.floor(sectimeold);msPerDay=24*60*60*1000;e_daysold=timeold/msPerDay;daysold=Math.floor(e_daysold);e_hrsold=(e_daysold-daysold)*24;hrsold=Math.floor(e_hrsold);e_minsold=(e_hrsold-hrsold)*60;minsold=Math.floor((e_hrsold-hrsold)*60);seconds=Math.floor((e_minsold-minsold)*60);span_dt_dt.innerHTML="DIUDIU 小菜鸟已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";}s();</script></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">簡</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    let initData = {
+      el: '#vcomment',
+      appId: '6yuSDkPBguVOpM4aUQdtT8Lq-gzGzoHsz',
+      appKey: '6U7kanDIFbCgrVL7XtRaaNLV',
+      placeholder: '留下您的足迹',
+      avatar: 'robohash',
+      meta: 'nick,mail,link'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: true,
+      path: window.location.pathname,
+    }
+
+    if (true) { 
+      initData.requiredFields= ('nick,mail'.split(','))
+    }
+    
+    if (false) {
+      const otherData = false
+      initData = Object.assign({}, initData, otherData)
+    }
+    
+    const valine = new Valine(initData)
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js').then(initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>

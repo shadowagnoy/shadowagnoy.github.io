@@ -1,0 +1,516 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DIUDIU 小菜鸟 - 自从厌倦于追寻，我已学会一觅即中,自从一股逆风袭来，我已能抗御八面来风，驾舟而行.</title><meta name="keywords" content="java,scala,spark,python,人工智能,大数据"><meta name="author" content="景帅"><meta name="copyright" content="景帅"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="DIUDIU 小菜鸟 学习笔记">
+<meta property="og:type" content="website">
+<meta property="og:title" content="DIUDIU 小菜鸟">
+<meta property="og:url" content="http://www.jsledd.cn/page/3/">
+<meta property="og:site_name" content="DIUDIU 小菜鸟">
+<meta property="og:description" content="DIUDIU 小菜鸟 学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.jsledd.cn/img/avatar.jpg">
+<meta property="article:author" content="景帅">
+<meta property="article:tag" content="java,scala,spark,python,人工智能,大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.jsledd.cn/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.jsledd.cn/page/3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="preconnect" href="//zz.bdstatic.com"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?97afb665c94e0e38fa62f5e1ea0c5c68";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: 景帅","link":"链接: ","source":"来源: DIUDIU 小菜鸟","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}
+
+// https://stackoverflow.com/questions/16839698/jquery-getscript-alternative-in-native-javascript
+const getScript = url => new Promise((resolve, reject) => {
+  const script = document.createElement('script')
+  script.src = url
+  script.async = true
+  script.onerror = reject
+  script.onload = script.onreadystatechange = function() {
+    const loadState = this.readyState
+    if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+    script.onload = script.onreadystatechange = null
+    resolve()
+  }
+  document.head.appendChild(script)
+})</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2021-02-03 16:11:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">55</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><i class="fa-fw fas fa-robot - 机器学习"></i><span> 人工智能</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><i class="fa-fw fas fa-tags - 数组"></i><span> 数据结构与算法</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE"><i class="fa-fw fas fa-folder-open - hadoop"></i><span> 大数据</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93"><i class="fa-fw fas fa-folder-open - mongo"></i><span> 数据库</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7"><i class="fa-fw fas fa-folder-open - java"></i><span> 开发语言与技巧</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li></ul></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/breakground.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">DIUDIU 小菜鸟</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><i class="fa-fw fas fa-robot - 机器学习"></i><span> 人工智能</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><i class="fa-fw fas fa-tags - 数组"></i><span> 数据结构与算法</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE"><i class="fa-fw fas fa-folder-open - hadoop"></i><span> 大数据</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93"><i class="fa-fw fas fa-folder-open - mongo"></i><span> 数据库</span></a></div><div class="menus_item"><a class="site-page" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7"><i class="fa-fw fas fa-folder-open - java"></i><span> 开发语言与技巧</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/books/"><i class="fa-fw fas fa-book"></i><span> 书籍</span></a></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 娱乐</span><i class="fas fa-chevron-down expand hide"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li><li><a class="site-page" href="/Gallery/"><i class="fa-fw fas fa-images"></i><span> 照片</span></a></li><li><a class="site-page" href="/games/"><i class="fa-fw fas fa-gamepad"></i><span> 游戏</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">DIUDIU 小菜鸟</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/shadowagnoy/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jingshuai@jsledd.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2017/03/14/python-pandas-series-dataframe/" title="Python Pandas之Series和DataFrame 的基本属性和方法">     <img class="post_bg" src="/images/5.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python Pandas之Series和DataFrame 的基本属性和方法"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/14/python-pandas-series-dataframe/" title="Python Pandas之Series和DataFrame 的基本属性和方法">Python Pandas之Series和DataFrame 的基本属性和方法</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-14T05:19:39.000Z" title="发表于 2017-03-14 13:19:39">2017-03-14</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.225Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content"> Series基本功能
+编号
+属性或方法
+描述
+1
+axes
+返回行轴标签列表。
+2
+dtype
+返回对象的数据类型(dtype)。
+3
+empty
+如果系列为空，则返回True。
+4
+ndim
+返回底层数据的维数，默认定义：1。
+5
+size
+返回基础数据中的元素数。
+6
+values
+将系列作为ndarray返回。
+7
+head()
+返回前n行。
+8
+tail()
+返回最后n行。
+ DataFrame基本功能
+下面来看看数据帧(DataFrame)的基本功能有哪些？下表列出了DataFrame基本功能的重要属性或方法。
+编号
+属性或方法
+描述
+1
+T
+转置行和列。
+2
+axes
+返回一个列，行轴标签和列轴标签作为唯一的成员。
+3
+dtypes
+返回此对象中的数据类型(dtypes)。
+4
+empty
+如果NDFrame完全为空[无项目]，则返回为True; 如果任何轴的长度为0。
+5
+ndim
+轴/数组维度大小。
+6
+shape
+返回表示DataFrame的维度的元组。
+7
+size
+NDFrame中的元素数。
+8
+values
+NDFrame的Numpy表示。
+9
+head()
+ ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2017/03/13/python-pandas-dataframe/" title="Python Pandas之DataFrame">     <img class="post_bg" src="/images/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python Pandas之DataFrame"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/13/python-pandas-dataframe/" title="Python Pandas之DataFrame">Python Pandas之DataFrame</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-13T04:20:58.000Z" title="发表于 2017-03-13 12:20:58">2017-03-13</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.183Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content">数据帧(DataFrame)是二维数据结构，即数据以行和列的表格方式排列。 数据帧(DataFrame)的功能特点：
+
+潜在的列是不同的类型
+大小可变
+标记轴(行和列)
+可以对行和列执行算术运算
+
+ pandas.DataFrame
+
+_pandas_中的DataFrame可以使用以下构造函数创建 - pandas.DataFrame( data, index, columns, dtype, copy)
+
+Python
+构造函数的参数如下 -
+编号
+参数
+描述
+1
+data
+数据采取各种形式，如:ndarray，series，map，lists，dict，constant和另一个DataFrame。
+2
+index
+对于行标签，要用于结果帧的索引是可选缺省值np.arrange(n)，如果没有传递索引值。
+3
+columns
+对于列标签，可选的默认语法是 - np.arange(n)。 这只有在没有索引传递的情况下才是这样。
+4
+dtype
+每列的数据类型。
+5
+copy
+如果默认值为False，则此命令(或任何它)用于复制数据。
+ 创建DataFrame
+Pandas数据帧(Dat ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2017/03/12/python-pandas-series/" title="Python Pandas之Series">     <img class="post_bg" src="/images/15.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python Pandas之Series"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/12/python-pandas-series/" title="Python Pandas之Series">Python Pandas之Series</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-12T03:55:00.000Z" title="发表于 2017-03-12 11:55:00">2017-03-12</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.189Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content">系列(Series)是能够保存任何类型的数据(整数，字符串，浮点数，Python对象等)的一维标记数组。轴标签统称为索引。
+ pandas.Series
+
+_Pandas_系列可以使用以下构造函数创建 - pandas.Series( data, index, dtype, copy)。
+
+Python
+构造函数的参数如下 -
+编号
+参数
+描述
+1
+data
+数据采取各种形式，如：ndarray，list，constants
+2
+index
+索引值必须是唯一的和散列的，与数据的长度相同。 默认np.arange(n)如果没有索引被传递。
+3
+dtype
+dtype用于数据类型。如果没有，将推断数据类型
+4
+copy
+复制数据，默认为false。
+可以使用各种输入创建一个系列，如 -
+
+数组
+字典
+标量值或常数
+
+ 代码举例：
+import pandas as pd
+import numpy as np
+print(pd.Series())  # 创建空的系列 默认Series([], dtype: float64)
+data = np.array([‘a’, ‘b’, ‘c’, ‘d’ ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2017/03/11/python-pandas-structures/" title="Python Pandas数据结构">     <img class="post_bg" src="/images/2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python Pandas数据结构"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/11/python-pandas-structures/" title="Python Pandas数据结构">Python Pandas数据结构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-11T03:41:34.000Z" title="发表于 2017-03-11 11:41:34">2017-03-11</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.261Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content">_Pandas_处理以下三个数据结构 -
+
+系列(Series)
+数据帧(DataFrame)
+面板(Panel)
+
+这些数据结构构建在_Numpy_数组之上，这意味着它们很快。
+ 维数和描述
+考虑这些数据结构的最好方法是，较高维数据结构是其较低维数据结构的容器。 例如，DataFrame是Series的容器，Panel是DataFrame的容器。
+数据结构
+维数
+描述
+系列
+1
+1D标记均匀数组，大小不变。
+数据帧
+2
+一般2D标记，大小可变的表结构与潜在的异质类型的列。
+面板
+3
+一般3D标记，大小可变数组。
+构建和处理两个或更多个维数组是一项繁琐的任务，用户在编写函数时要考虑数据集的方向。 但是使用_Pandas_数据结构，减少了用户的思考。 例如，使用表格数据(DataFrame)，在语义上更有用于考虑索引(行)和列，而不是轴0和轴1。 可变性 所有_Pandas_数据结构是值可变的(可以更改)，除了系列都是大小可变的。系列是大小不变的。
+
+注 - DataFrame被广泛使用，是最重要的数据结构之一。面板使用少得多。
+
+ 系列
+系列是具有均匀数据的一维数组结构。例如，以下系列 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2017/03/10/python-numpy-linearalgebra/" title="Python科学计算库Numpy之 线性代数">     <img class="post_bg" src="/images/11.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python科学计算库Numpy之 线性代数"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/10/python-numpy-linearalgebra/" title="Python科学计算库Numpy之 线性代数">Python科学计算库Numpy之 线性代数</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-10T10:37:49.000Z" title="发表于 2017-03-10 18:37:49">2017-03-10</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.128Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content"> NumPy - 线性代数
+NumPy 包包含numpy.linalg模块，提供线性代数所需的所有功能。 此模块中的一些重要功能如下表所述。
+序号
+函数及描述
+
+
+
+dot 两个数组的点积
+
+
+
+vdot 两个向量的点积
+
+
+
+inner 两个数组的内积
+
+
+
+matmul 两个数组的矩阵积
+
+
+
+determinant 数组的行列式
+
+
+
+solve 求解线性矩阵方程
+
+
+
+inv 寻找矩阵的乘法逆矩阵
+ numpy.dot()
+此函数返回两个数组的点积。 对于二维向量，其等效于矩阵乘法。 对于一维数组，它是向量的内积。 对于 N 维数组，它是a的最后一个轴上的和与b的倒数第二个轴的乘积。
+ numpy.vdot()
+此函数返回两个向量的点积。 如果第一个参数是复数，那么它的共轭复数会用于计算。 如果参数id是多维数组，它会被展开
+ numpy.inner()
+此函数返回一维数组的向量内积。 对于更高的维度，它返回最后一个轴上的和的乘积。
+ numpy.matmul
+numpy.matmul()函数返回两个数组的矩阵乘积。 虽然它返回二维数组的正常乘积，但如果任一参数的维数大于2，则 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2017/03/09/python-numpy-matrix/" title="Python科学计算库Numpy之 矩阵库">     <img class="post_bg" src="/images/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python科学计算库Numpy之 矩阵库"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/09/python-numpy-matrix/" title="Python科学计算库Numpy之 矩阵库">Python科学计算库Numpy之 矩阵库</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-09T09:01:04.000Z" title="发表于 2017-03-09 17:01:04">2017-03-09</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.277Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content"> NumPy - 矩阵库
+NumPy 包包含一个 Matrix库numpy.matlib。此模块的函数返回矩阵而不是返回ndarray对象
+ 代码举例：
+import numpy.matlib
+import numpy as np
+print(np.matlib.empty((2, 2)))  # 填充为随机数据
+print(np.matlib.zeros((2, 2)))
+print(np.matlib.ones((2, 2)))
+print(np.matlib.eye(n=3, M=4, k=0, dtype=float))
+print(np.matlib.identity(5, dtype=float))
+print(np.matlib.rand(3, 3))
+i = np.matrix(‘1,2;3,4’)
+print(np.asarray(i))
+print(np.asmatrix(i))
+ 代码 Github地址:https://github.com/shadowagnoy/python_learn/
+ 参考文档：https://docs.scipy.org/doc/num ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2017/03/09/python-numpy-copy-view/" title="Python科学计算库Numpy之 复制和视图">     <img class="post_bg" src="/images/15.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python科学计算库Numpy之 复制和视图"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/09/python-numpy-copy-view/" title="Python科学计算库Numpy之 复制和视图">Python科学计算库Numpy之 复制和视图</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-09T08:46:04.000Z" title="发表于 2017-03-09 16:46:04">2017-03-09</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.199Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content"> NumPy - 副本和视图
+在执行函数时，其中一些返回输入数组的副本，而另一些返回视图。 当内容物理存储在另一个位置时，称为副本。 另一方面，如果提供了相同内存内容的不同视图，我们将其称为视图。
+ 无复制
+简单的赋值不会创建数组对象的副本。 相反，它使用原始数组的相同id()来访问它。 id()返回 Python 对象的通用标识符，类似于 C 中的指针。 此外，一个数组的任何变化都反映在另一个数组上。 例如，一个数组的形状改变也会改变另一个数组的形状。
+ 视图或浅复制
+NumPy 拥有ndarray.view()方法，它是一个新的数组对象，并可查看原始数组的相同数据。 与前一种情况不同，新数组的维数更改不会更改原始数据的维数 切片属于视图
+ 深复制
+ndarray.copy()函数创建一个深层副本。 它是数组及其数据的完整副本，不与原始数组共享。
+import numpy as np
+a = np.arange(6)
+b = a
+b.shape = 3, 2
+print(a)
+print(id(a) == id(b))  # 直接使用 =  复制 a和b 完全一致
+c = a.vie ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2017/03/08/python-numpy-sort-search-count/" title="Python科学计算库Numpy之 排序、搜索和计数函数">     <img class="post_bg" src="/images/10.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python科学计算库Numpy之 排序、搜索和计数函数"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/08/python-numpy-sort-search-count/" title="Python科学计算库Numpy之 排序、搜索和计数函数">Python科学计算库Numpy之 排序、搜索和计数函数</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-08T08:00:01.000Z" title="发表于 2017-03-08 16:00:01">2017-03-08</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.140Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content"> NumPy - 排序、搜索和计数函数
+NumPy中提供了各种排序相关功能。 这些排序函数实现不同的排序算法，每个排序算法的特征在于执行速度，最坏情况性能，所需的工作空间和算法的稳定性。 下表显示了三种排序算法的比较。
+种类
+速度
+最坏情况
+工作空间
+稳定性
+'quicksort'（快速排序）
+1
+O(n^2)
+0
+否
+'mergesort'（归并排序）
+2
+O(n*log(n))
+~n/2
+是
+'heapsort'（堆排序）
+3
+O(n*log(n))
+0
+否
+ numpy.sort(a, axis, kind, order)
+序号
+参数及描述
+
+
+
+a 要排序的数组
+
+
+
+axis 沿着它排序数组的轴，如果没有数组会被展开，沿着最后的轴排序
+
+
+
+kind 默认为'quicksort'（快速排序）
+
+
+
+order 如果数组包含字段，则是要排序的字段
+ 代码举例：
+import numpy as np
+a = np.array([[3, 7], [9, 1]])
+print(np.sort(a))
+print(np.sort(a, axis=0))
+dt = np.dtype([( ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/2017/03/07/python-numpy-stst/" title="Python科学计算库Numpy之 统计函数">     <img class="post_bg" src="/images/4.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Python科学计算库Numpy之 统计函数"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/07/python-numpy-stst/" title="Python科学计算库Numpy之 统计函数">Python科学计算库Numpy之 统计函数</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-07T07:55:13.000Z" title="发表于 2017-03-07 15:55:13">2017-03-07</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.266Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/">开发语言与技巧</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/">python</a></span></div><div class="content"> NumPy - 统计函数
+NumPy 有很多有用的统计函数，用于从数组中给定的元素中查找最小，最大，百分标准差和方差等.
+ 代码举例：
+import numpy as np
+a = np.array([[3, 7, 5], [8, 4, 3], [2, 4, 9]])
+‘’’
+numpy.amin() 和 numpy.amax()
+这些函数从给定数组中的元素沿指定轴返回最小值和最大值
+‘’’
+print(np.amin(a, axis=0))
+print(np.ptp(a, axis=1))  # numpy.ptp()函数返回沿轴的值的范围（最大值 - 最小值）
+a = np.array([[30, 40, 70], [80, 20, 10], [50, 90, 60]])
+print(np.percentile(a, 50))
+print(np.percentile(a, 50, axis=1))  # 分位数是统计中使用的度量，表示小于这个值得观察值占某个百分比
+print(np.median(a, axis=0))  # 中值定义为将数据样本的上半部分与下半部分分开的值
+pr ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/2017/03/07/mongodb-shard-user/" title="mongodb 分片+副本集 身份认证和角色创建">     <img class="post_bg" src="/images/12.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="mongodb 分片+副本集 身份认证和角色创建"></a></div><div class="recent-post-info"><a class="article-title" href="/2017/03/07/mongodb-shard-user/" title="mongodb 分片+副本集 身份认证和角色创建">mongodb 分片+副本集 身份认证和角色创建</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-03-07T06:28:27.000Z" title="发表于 2017-03-07 14:28:27">2017-03-07</time><span class="article-meta__separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-01-08T09:51:25.178Z" title="更新于 2021-01-08 17:51:25">2021-01-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="fas fa-angle-right"></i><a class="article-meta__categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mongodb/">mongodb</a></span></div><div class="content">
+ 简介：
+
+mongodb 数据库分片+副本集 搭建完成以后，就可以正常使用，但是有数据安全问题，所以最好设置安全验证。
+
+ 1.创建超级管理员和普通用户
+
+超级管理员：可管理所有的数据库。 普通用户：某个数据库的管理员。 开启数据库登录认证之前必须要创建一个超级数据库管理员了，否则无法对数据库进行操作。 如何创建用户和数据库授权，请参考Mongodb官方文档。参考地址： https://docs.mongodb.com/manual/core/security-users/ https://docs.mongodb.com/manual/tutorial/create-users/
+ 1.1.数据库角色介绍
+MongoDB基本的角色 1.数据库用户角色Database UserRoles：read、readWrite; 2.数据库管理角色DatabaseAdministrator Role：dbAdmin、dbOwner、userAdmin； 3.集群管理角色 ClusterAdministartor Roles：clusterAdmin、clusterManager、cluste ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">景帅</div><div class="author-info__description">DIUDIU 小菜鸟 学习笔记</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">55</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">26</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/shadowagnoy"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/shadowagnoy/" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:jingshuai@jsledd.cn" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">记录成长</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/01/05/largegroup/" title="较大分组的位置"><img src="/2021/01/05/largegroup/largegroup.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="较大分组的位置"/></a><div class="content"><a class="title" href="/2021/01/05/largegroup/" title="较大分组的位置">较大分组的位置</a><time datetime="2021-01-05T02:55:40.000Z" title="发表于 2021-01-05 10:55:40">2021-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/09/29/mongodb42-shard/" title="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本"><img src="/images/11.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本"/></a><div class="content"><a class="title" href="/2019/09/29/mongodb42-shard/" title="Mongodb4.2.0 副本集 + 分片 + 自动运维脚本">Mongodb4.2.0 副本集 + 分片 + 自动运维脚本</a><time datetime="2019-09-29T07:46:25.000Z" title="发表于 2019-09-29 15:46:25">2019-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/04/05/datasourcev2/" title="Spark SQL DataSource V2 学习入门 + 代码模板"><img src="/images/6.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spark SQL DataSource V2 学习入门 + 代码模板"/></a><div class="content"><a class="title" href="/2019/04/05/datasourcev2/" title="Spark SQL DataSource V2 学习入门 + 代码模板">Spark SQL DataSource V2 学习入门 + 代码模板</a><time datetime="2019-04-05T08:09:19.000Z" title="发表于 2019-04-05 16:09:19">2019-04-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2019/04/01/sparksql24api/" title="SPARK SQL2.4 自学教程"><img src="/images/3.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SPARK SQL2.4 自学教程"/></a><div class="content"><a class="title" href="/2019/04/01/sparksql24api/" title="SPARK SQL2.4 自学教程">SPARK SQL2.4 自学教程</a><time datetime="2019-04-01T07:46:25.000Z" title="发表于 2019-04-01 15:46:25">2019-04-01</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2018/08/05/linearregression/" title="线性回归模型的推导"><img src="/images/10.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="线性回归模型的推导"/></a><div class="content"><a class="title" href="/2018/08/05/linearregression/" title="线性回归模型的推导">线性回归模型的推导</a><time datetime="2018-08-05T02:40:11.000Z" title="发表于 2018-08-05 10:40:11">2018-08-05</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/leetcode/"><span class="card-category-list-name">leetcode</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/"><span class="card-category-list-name">人工智能</span><span class="card-category-list-count">5</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">机器学习</span><span class="card-category-list-count">5</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%89%B9%E5%BE%81%E5%B7%A5%E7%A8%8B/"><span class="card-category-list-name">特征工程</span><span class="card-category-list-count">4</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/"><span class="card-category-list-name">线性回归</span><span class="card-category-list-count">1</span></a></li></ul></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/"><span class="card-category-list-name">大数据</span><span class="card-category-list-count">10</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/cdh/"><span class="card-category-list-name">cdh</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/hadoop/"><span class="card-category-list-name">hadoop</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/hbase/"><span class="card-category-list-name">hbase</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/kafka/"><span class="card-category-list-name">kafka</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/spark/"><span class="card-category-list-name">spark</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/zookeeper/"><span class="card-category-list-name">zookeeper</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/"><span class="card-category-list-name">开发语言与技巧</span><span class="card-category-list-count">35</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/python/"><span class="card-category-list-name">python</span><span class="card-category-list-count">31</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%8A%80%E5%B7%A7/scala/"><span class="card-category-list-name">scala</span><span class="card-category-list-count">4</span></a></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"><span class="card-category-list-name">数据库</span><span class="card-category-list-count">6</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mongodb/"><span class="card-category-list-name">mongodb</span><span class="card-category-list-count">6</span></a></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/"><span class="card-category-list-name">数据结构与算法</span><span class="card-category-list-count">4</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E7%BB%84/"><span class="card-category-list-name">数组</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%95%B0%E7%BB%84/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84/"><span class="card-category-list-name">稀疏数组</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E6%A0%88/"><span class="card-category-list-name">栈</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/"><span class="card-category-list-name">链表</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E9%93%BE%E8%A1%A8/%E5%8D%95%E9%93%BE%E8%A1%A8/"><span class="card-category-list-name">单链表</span><span class="card-category-list-count">2</span></a></li></ul></li></ul></li><li class="card-category-list-item parent"><a class="card-category-list-link" href="/categories/%E7%B3%BB%E7%BB%9F%E4%B8%8E%E6%9C%8D%E5%8A%A1/"><span class="card-category-list-name">系统与服务</span><span class="card-category-list-count">2</span><i class="fas fa-caret-left "></i></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%B3%BB%E7%BB%9F%E4%B8%8E%E6%9C%8D%E5%8A%A1/linux/"><span class="card-category-list-name">linux</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%B3%BB%E7%BB%9F%E4%B8%8E%E6%9C%8D%E5%8A%A1/%E8%99%9A%E6%8B%9F%E5%8C%96/"><span class="card-category-list-name">虚拟化</span><span class="card-category-list-count">1</span></a></li></ul></li>
+            
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fa fa-tags" aria-hidden="true"></i><span>标签</span><script type="text/javascript" charset="utf-8" src="/js/tagcloud.js"></script><script type="text/javascript" charset="utf-8" src="/js/tagcanvas.js"></script><div class="widget tagcloud" id="myCanvasContainer" align="center"><canvas id="resCanvas" width="200" height="200" style="width=100%"><a href="/tags/DataFrame/" style="font-size: 10px;">DataFrame</a> <a href="/tags/Google/" style="font-size: 10px;">Google</a> <a href="/tags/Guava/" style="font-size: 10px;">Guava</a> <a href="/tags/Scikit/" style="font-size: 10px;">Scikit</a> <a href="/tags/Scikit-learn/" style="font-size: 11.43px;">Scikit-learn</a> <a href="/tags/Series/" style="font-size: 10px;">Series</a> <a href="/tags/actor/" style="font-size: 11.43px;">actor</a> <a href="/tags/akka/" style="font-size: 11.43px;">akka</a> <a href="/tags/apache/" style="font-size: 10px;">apache</a> <a href="/tags/broadcasting/" style="font-size: 10px;">broadcasting</a> <a href="/tags/centos/" style="font-size: 10px;">centos</a> <a href="/tags/disk/" style="font-size: 10px;">disk</a> <a href="/tags/dtype/" style="font-size: 10px;">dtype</a> <a href="/tags/feature-engineering/" style="font-size: 10px;">feature-engineering</a> <a href="/tags/ha/" style="font-size: 11.43px;">ha</a> <a href="/tags/hadoop/" style="font-size: 17.14px;">hadoop</a> <a href="/tags/hbase/" style="font-size: 11.43px;">hbase</a> <a href="/tags/hdfs/" style="font-size: 10px;">hdfs</a> <a href="/tags/httpd/" style="font-size: 10px;">httpd</a> <a href="/tags/install/" style="font-size: 10px;">install</a> <a href="/tags/kafka/" style="font-size: 12.86px;">kafka</a> <a href="/tags/keyFile/" style="font-size: 10px;">keyFile</a> <a href="/tags/learn/" style="font-size: 10px;">learn</a> <a href="/tags/leetcode/" style="font-size: 10px;">leetcode</a> <a href="/tags/mongo/" style="font-size: 12.86px;">mongo</a> <a href="/tags/mongod/" style="font-size: 10px;">mongod</a> <a href="/tags/mongodb/" style="font-size: 10px;">mongodb</a> <a href="/tags/ndarray/" style="font-size: 10px;">ndarray</a> <a href="/tags/nditer/" style="font-size: 10px;">nditer</a> <a href="/tags/numpy/" style="font-size: 18.57px;">numpy</a> <a href="/tags/panda/" style="font-size: 10px;">panda</a> <a href="/tags/pandas/" style="font-size: 18.57px;">pandas</a> <a href="/tags/python/" style="font-size: 20px;">python</a> <a href="/tags/scala/" style="font-size: 14.29px;">scala</a> <a href="/tags/shard/" style="font-size: 11.43px;">shard</a> <a href="/tags/sklearn/" style="font-size: 10px;">sklearn</a> <a href="/tags/slice/" style="font-size: 10px;">slice</a> <a href="/tags/spark/" style="font-size: 15.71px;">spark</a> <a href="/tags/thread/" style="font-size: 10px;">thread</a> <a href="/tags/threading/" style="font-size: 10px;">threading</a> <a href="/tags/vcore/" style="font-size: 10px;">vcore</a> <a href="/tags/vm/" style="font-size: 10px;">vm</a> <a href="/tags/yarn/" style="font-size: 14.29px;">yarn</a> <a href="/tags/yum/" style="font-size: 10px;">yum</a> <a href="/tags/zookeeper/" style="font-size: 11.43px;">zookeeper</a> <a href="/tags/%E5%88%86%E7%89%87/" style="font-size: 10px;">分片</a> <a href="/tags/%E5%8D%95%E9%93%BE%E8%A1%A8/" style="font-size: 11.43px;">单链表</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 10px;">多线程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 14.29px;">数据结构与算法</a> <a href="/tags/%E6%95%B0%E7%BB%84/" style="font-size: 11.43px;">数组</a> <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" style="font-size: 10px;">机器学习</a> <a href="/tags/%E6%A0%88/" style="font-size: 10px;">栈</a> <a href="/tags/%E7%A8%80%E7%96%8F%E6%95%B0%E7%BB%84/" style="font-size: 10px;">稀疏数组</a> <a href="/tags/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/" style="font-size: 10px;">线性回归</a> <a href="/tags/%E9%93%BE%E8%A1%A8/" style="font-size: 11.43px;">链表</a></canvas><a href="/tags/DataFrame/" style="font-size: 16px; color: #999">DataFrame</a> <a href="/tags/Google/" style="font-size: 16px; color: #999">Google</a> <a href="/tags/Guava/" style="font-size: 16px; color: #999">Guava</a> <a href="/tags/Scikit/" style="font-size: 16px; color: #999">Scikit</a> <a href="/tags/Scikit-learn/" style="font-size: 17.14px; color: #999b9e">Scikit-learn</a> <a href="/tags/Series/" style="font-size: 16px; color: #999">Series</a> <a href="/tags/actor/" style="font-size: 17.14px; color: #999b9e">actor</a> <a href="/tags/akka/" style="font-size: 17.14px; color: #999b9e">akka</a> <a href="/tags/apache/" style="font-size: 16px; color: #999">apache</a> <a href="/tags/broadcasting/" style="font-size: 16px; color: #999">broadcasting</a> <a href="/tags/centos/" style="font-size: 16px; color: #999">centos</a> <a href="/tags/disk/" style="font-size: 16px; color: #999">disk</a> <a href="/tags/dtype/" style="font-size: 16px; color: #999">dtype</a> <a href="/tags/feature-engineering/" style="font-size: 16px; color: #999">feature-engineering</a> <a href="/tags/ha/" style="font-size: 17.14px; color: #999b9e">ha</a> <a href="/tags/hadoop/" style="font-size: 21.71px; color: #99a4b4">hadoop</a> <a href="/tags/hbase/" style="font-size: 17.14px; color: #999b9e">hbase</a> <a href="/tags/hdfs/" style="font-size: 16px; color: #999">hdfs</a> <a href="/tags/httpd/" style="font-size: 16px; color: #999">httpd</a> <a href="/tags/install/" style="font-size: 16px; color: #999">install</a> <a href="/tags/kafka/" style="font-size: 18.29px; color: #999ea4">kafka</a> <a href="/tags/keyFile/" style="font-size: 16px; color: #999">keyFile</a> <a href="/tags/learn/" style="font-size: 16px; color: #999">learn</a> <a href="/tags/leetcode/" style="font-size: 16px; color: #999">leetcode</a> <a href="/tags/mongo/" style="font-size: 18.29px; color: #999ea4">mongo</a> <a href="/tags/mongod/" style="font-size: 16px; color: #999">mongod</a> <a href="/tags/mongodb/" style="font-size: 16px; color: #999">mongodb</a> <a href="/tags/ndarray/" style="font-size: 16px; color: #999">ndarray</a> <a href="/tags/nditer/" style="font-size: 16px; color: #999">nditer</a> <a href="/tags/numpy/" style="font-size: 22.86px; color: #99a7ba">numpy</a> <a href="/tags/panda/" style="font-size: 16px; color: #999">panda</a> <a href="/tags/pandas/" style="font-size: 22.86px; color: #99a7ba">pandas</a> <a href="/tags/python/" style="font-size: 24px; color: #99a9bf">python</a> <a href="/tags/scala/" style="font-size: 19.43px; color: #99a0a9">scala</a> <a href="/tags/shard/" style="font-size: 17.14px; color: #999b9e">shard</a> <a href="/tags/sklearn/" style="font-size: 16px; color: #999">sklearn</a> <a href="/tags/slice/" style="font-size: 16px; color: #999">slice</a> <a href="/tags/spark/" style="font-size: 20.57px; color: #99a2af">spark</a> <a href="/tags/thread/" style="font-size: 16px; color: #999">thread</a> <a href="/tags/threading/" style="font-size: 16px; color: #999">threading</a> <a href="/tags/vcore/" style="font-size: 16px; color: #999">vcore</a> <a href="/tags/vm/" style="font-size: 16px; color: #999">vm</a> <a href="/tags/yarn/" style="font-size: 19.43px; color: #99a0a9">yarn</a> <a href="/tags/yum/" style="font-size: 16px; color: #999">yum</a> <a href="/tags/zookeeper/" style="font-size: 17.14px; color: #999b9e">zookeeper</a> <a href="/tags/%E5%88%86%E7%89%87/" style="font-size: 16px; color: #999">分片</a> <a href="/tags/%E5%8D%95%E9%93%BE%E8%A1%A8/" style="font-size: 17.14px; color: #999b9e">单链表</a> <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" style="font-size: 16px; color: #999">多线程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/" style="font-size: 19.43px; color: #99a0a9">数据结构与算法</a> <a href="/tags/%E6%95%B0%E7%BB%84/" style="font-size: 17.14px; color: #999b9e">数组</a></div></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/01/"><span class="card-archive-list-date">一月 2021</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/09/"><span class="card-archive-list-date">九月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/04/"><span class="card-archive-list-date">四月 2019</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2018/08/"><span class="card-archive-list-date">八月 2018</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/07/"><span class="card-archive-list-date">七月 2017</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/06/"><span class="card-archive-list-date">六月 2017</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/05/"><span class="card-archive-list-date">五月 2017</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2017/04/"><span class="card-archive-list-date">四月 2017</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">63</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">86.4k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2021-02-03T08:11:57.215Z"></div></div></div></div></div></div></div></main><footer id="footer" style="background-image: url(/img/breakground.jpg)"><div id="footer-wrap"><div class="copyright">&copy;2016 - 2021 By 景帅</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text"><a rel="nofollow" target="_blank" href="http://www.miibeian.gov.cn/"><img class="icp-icon" src="/img/icp.png">京ICP备16021974号-1</a><br><span id="span_dt_dt"></span><script type="text/javascript">function s(){window.setTimeout("s()",1000);BirthDay=new Date("4/18/2016 12:48:26");today=new Date();timeold=(today.getTime()-BirthDay.getTime());sectimeold=timeold/1000;secondsold=Math.floor(sectimeold);msPerDay=24*60*60*1000;e_daysold=timeold/msPerDay;daysold=Math.floor(e_daysold);e_hrsold=(e_daysold-daysold)*24;hrsold=Math.floor(e_hrsold);e_minsold=(e_hrsold-hrsold)*60;minsold=Math.floor((e_hrsold-hrsold)*60);seconds=Math.floor((e_minsold-minsold)*60);span_dt_dt.innerHTML="DIUDIU 小菜鸟已运行"+daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";}s();</script></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">簡</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  fetch('https://api.btstu.cn/yan/api.php?charset=utf-8&encode=json')
+    .then(response => response.json())
+    .then(data => {
+      if (true) {
+        var sub = "自从厌倦于追寻，我已学会一觅即中,自从一股逆风袭来，我已能抗御八面来风，驾舟而行.".length == 0 ? new Array() : "自从厌倦于追寻，我已学会一觅即中,自从一股逆风袭来，我已能抗御八面来风，驾舟而行.".split(',')
+        var both = sub.unshift(data.text)
+        typed = new Typed('#subtitle', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: false,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('subtitle').innerHTML = data.text
+      }
+    })
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/gh/metowolf/MetingJS@1.2/dist/Meting.min.js"></script><script>(function(){
+  const bp = document.createElement('script');
+  const curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else{
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  bp.dataset.pjax = ''
+  const s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})()</script></div></body></html>
